@@ -25,3 +25,14 @@ let httpServer = app.listen(port, function () {
   console.log(`webbserver körs på port ${port}`);
 });
 
+const fs= require('fs');
+const dataToWrite= 'Text file';
+
+fs.writeFile('filename.txt',
+dataToWrite, (err) => {
+  if (err) {
+    console.error (err);
+    return;
+  }
+  console.log ('hej hej');
+})
