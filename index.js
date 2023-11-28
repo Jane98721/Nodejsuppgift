@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const port = 8000;
 
-const entries=[];
-
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -11,28 +9,49 @@ app.use(
   })
 );
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/form.html");
-});
+const fs= require('fs');
+const entriesFilePath = "test.txt";
 
-app.post("/postRoute", (req, res)=> {
-console.log (req.body);
-entries.push ({Name:req.body.name, Number:req.body.number, Email:req.body.email, Comment:req.body.comment});
-res.send (entries);
-});
+const readEntriesFromFile = () => {
+  const entriesContent = fs.readFileSync(entriesFilePath, "utf-8");
+  return entriesContent.split("\n").filter((entry) => entry.trim() !== "");
+};
+
+const writeEntriesToFile = (entries) => {
+  const entriesString = 
+  entries.join("\n")
+  fs.writeFileSync(entriesFilePath, entriesString);
+};
+
 
 let httpServer = app.listen(port, function () {
   console.log(`webbserver körs på port ${port}`);
 });
 
-const fs= require('fs');
-const dataToWrite= 'Text file';
 
-fs.writeFile('filename.txt',
-dataToWrite, (err) => {
+app.post("/postRoute", (req, res)=> {
+const entry= {
+Name: req.body.name
+Number: req.body.number
+Email: req.body.email
+Comment: req.body.comment
+};
+
+
+fs.readFile('test.txt', 'utf8', (err, data) => {
+if (err) {
+  console.error (err);
+  return;
+}
+ console.log (data);
+});
+
+const content = "how are you";
+
+fs.writeFile ('test.txt', content, err => {
   if (err) {
     console.error (err);
     return;
   }
-  console.log ('hej hej');
-})
+});
+*/
