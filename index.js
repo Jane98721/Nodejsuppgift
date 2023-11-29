@@ -23,6 +23,14 @@ const writeEntriesToFile = (entries) => {
   fs.writeFileSync(entriesFilePath, entriesString);
 };
 
+app.post("/submit", (req, res) => {
+  const newEntry = {name: req.body.name, number: req.body.number, email: req.body.email, comment: req.body.comment};
+  const existingEntries = readEntriesFromFile();
+  existingEntries.push(`${newEntry.name} ${newEntry.number} ${newEntry.email} ${newEntry.comment}`);
+
+  writeEntriesToFile(existingEntries);
+  res.redirect("/");
+});
 
 let httpServer = app.listen(port, function () {
   console.log(`webbserver körs på port ${port}`);
@@ -31,27 +39,9 @@ let httpServer = app.listen(port, function () {
 
 app.post("/postRoute", (req, res)=> {
 const entry= {
-Name: req.body.name
-Number: req.body.number
-Email: req.body.email
+Name: req.body.name,
+Number: req.body.number,
+Email: req.body.email,
 Comment: req.body.comment
 };
-
-
-fs.readFile('test.txt', 'utf8', (err, data) => {
-if (err) {
-  console.error (err);
-  return;
-}
- console.log (data);
 });
-
-const content = "how are you";
-
-fs.writeFile ('test.txt', content, err => {
-  if (err) {
-    console.error (err);
-    return;
-  }
-});
-*/
